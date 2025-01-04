@@ -1,0 +1,396 @@
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+h1 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  margin-top: 8px;
+  font-size: 1.1em;
+}
+
+.main-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* Input Section */
+.input-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.url-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.load-btn {
+  padding: 12px 24px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.load-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+/* Controls Section */
+.controls-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.control-group {
+  margin-bottom: 16px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.speed-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.speed-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.speed-btn {
+  padding: 6px 12px;
+  border: 1px solid #3498db;
+  border-radius: 4px;
+  background: none;
+  color: #3498db;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speed-btn.active {
+  background-color: #3498db;
+  color: white;
+}
+
+/* Continuing from the previous speed-btn:hover */
+.speed-btn:hover {
+  background-color: #2980b9;
+  color: white;
+}
+
+/* Advanced Controls */
+.advanced-controls {
+  margin-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+}
+
+.advanced-toggle {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.advanced-toggle:hover {
+  text-decoration: underline;
+}
+
+.advanced-panel {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.threshold-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.threshold-value {
+  color: #3498db;
+  font-weight: normal;
+}
+
+.threshold-slider {
+  width: 100%;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.threshold-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: #3498db;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.threshold-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background-color: #3498db;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Video Container */
+.video-container {
+  margin: 24px 0;
+  display: flex;
+  justify-content: center;
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Analysis Section */
+.analysis-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 24px;
+}
+
+.progress-bar {
+  height: 24px;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #3498db;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: width 0.2s ease;
+}
+
+.silence-marker {
+  position: absolute;
+  height: 100%;
+  background-color: rgba(231, 76, 60, 0.3);
+  top: 0;
+}
+
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  color: #7f8c8d;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.volume-meter {
+  width: 100%;
+  height: 60px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.volume-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #3498db;
+  transition: height 0.1s ease;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.stats p {
+  margin: 0;
+}
+
+/* Messages */
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.status-message {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 12px;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  .control-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .speed-buttons {
+    flex-wrap: wrap;
+  }
+
+  .speed-btn {
+    flex: 1;
+    min-width: 60px;
+  }
+
+  .video-container {
+    margin: 16px -12px;
+    border-radius: 0;
+  }
+
+  youtube-player {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.isAnalyzing .volume-bar {
+  animation: pulse 1s infinite;
+}
+
+/* Accessibility Improvements */
+:focus-visible {
+  outline: 3px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .app-container {
+    background-color: #1a1a1a;
+  }
+
+  .main-content {
+    background-color: #2d2d2d;
+  }
+
+  .controls-section,
+  .analysis-section {
+    background-color: #333333;
+  }
+
+  h1,
+  .stats {
+    color: #ffffff;
+  }
+
+  .subtitle {
+    color: #cccccc;
+  }
+
+  .url-input {
+    background-color: #333333;
+    border-color: #444444;
+    color: #ffffff;
+  }
+
+  .threshold-slider {
+    background-color: #444444;
+  }
+
+  .advanced-panel {
+    background-color: #2d2d2d;
+  }
+}
