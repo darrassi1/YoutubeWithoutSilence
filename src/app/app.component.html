@@ -91,15 +91,16 @@
     </div>
 
     <!-- Video Player -->
-    <div *ngIf="videoId" class="video-container">
-      <youtube-player
-        [videoId]="videoId"
-        [height]="400"
-        [width]="800"
-        (ready)="onPlayerReady($event)"
-        (stateChange)="onPlayerStateChange($event)"
-      ></youtube-player>
-    </div>
+<div class="video-container">
+  <youtube-player
+    [videoId]="videoId"
+    [height]="playerHeight"
+    [width]="playerWidth"
+    (ready)="onPlayerReady($event)"
+    (stateChange)="onPlayerStateChange($event)"
+    class="youtube-player"
+  ></youtube-player>
+</div>
 
     <!-- Analysis Visualization -->
     <div *ngIf="videoId" class="analysis-section">

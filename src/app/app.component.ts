@@ -32,6 +32,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private audioContext: AudioContext | null = null;
   private audioAnalyser: AnalyserNode | null = null;
   private mediaStreamSource: MediaStreamAudioSourceNode | null = null;
+  playerWidth: number = 800;
+  playerHeight: number = 450; // 16:9 aspect ratio
 
   ngOnInit() {
     const tag = document.createElement('script');
@@ -40,6 +42,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Initialize Audio Context
     this.initializeAudioContext();
+        window.addEventListener('resize', this.updatePlayerSize.bind(this));
+    this.updatePlayerSize();
+  }
+
+ private updatePlayerSize() {
+    const containerWidth = Math.min(
+      document.querySelector('.video-container')?.clientWidth || 800,
+      800
+    );
+    this.playerWidth = containerWidth;
+    this.playerHeight = Math.floor((containerWidth * 9) / 16); // maintain 16:9 ratio
   }
 
   private initializeAudioContext() {
@@ -230,6 +243,7 @@ private isWithinExistingSilenceSegment(time: number): boolean {
     if (this.audioContext) {
       this.audioContext.close();
     }
+    window.removeEventListener('resize', this.updatePlayerSize.bind(this));
   }
 }
 
