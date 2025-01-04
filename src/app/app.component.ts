@@ -16,8 +16,8 @@ export class AppComponent implements OnInit, OnDestroy {
   videoId: string = '';
   error: string = '';
   skipSilence: boolean = false;
-  silenceThreshold: number = 50;
-  minSilenceDuration: number = 0.5;
+  silenceThreshold: number = 80;
+  minSilenceDuration: number = 1.2;
   playbackSpeed: number = 1.0;
   isAnalyzing: boolean = false;
   showAdvancedControls: boolean = false;
@@ -108,52 +108,86 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private analyzeVolume() {
-    if (!this.audioAnalyser) return;
+  if (!this.audioAnalyser) return;
 
-    const dataArray = new Float32Array(this.audioAnalyser.frequencyBinCount);
-    this.audioAnalyser.getFloatTimeDomainData(dataArray);
+  const dataArray = new Float32Array(this.audioAnalyser.frequencyBinCount);
+  this.audioAnalyser.getFloatTimeDomainData(dataArray);
 
-    // Calculate RMS volume
-    let sum = 0;
-    for (let i = 0; i < dataArray.length; i++) {
-      sum += dataArray[i] * dataArray[i];
-    }
-    this.volumeLevel = Math.sqrt(sum / dataArray.length);
+  // Simple RMS calculation
+  let sum = 0;
+  for (let i = 0; i < dataArray.length; i++) {
+    sum += dataArray[i] * dataArray[i];
   }
+  this.volumeLevel = Math.sqrt(sum / dataArray.length);
+}
 
-  private startSilenceDetection() {
-    if (!this.player) return;
+private startSilenceDetection() {
+  if (!this.player) return;
 
-    if (!this.silenceCheckInterval) {
-      this.silenceCheckInterval = setInterval(() => {
-        if (this.player.getPlayerState() === 1) {
-          const currentTime = this.player.getCurrentTime();
-          const volume = this.volumeLevel;
+  let silenceStart: number | null = null;
 
-          if (volume < this.silenceThreshold / 100) {
-            const silenceSegment = {
-              start: currentTime,
-              end: currentTime + this.minSilenceDuration
-            };
+  if (!this.silenceCheckInterval) {
+    this.silenceCheckInterval = setInterval(() => {
+      if (this.player.getPlayerState() === 1) { // Playing
+        const currentTime = this.player.getCurrentTime();
+        const volume = this.volumeLevel;
 
-            // Check if we should skip this segment
-            if (this.skipSilence &&
-                silenceSegment.end < this.duration &&
-                !this.isWithinExistingSilenceSegment(currentTime)) {
-              this.player.seekTo(silenceSegment.end, true);
-              this.silenceSegments.push(silenceSegment);
+        // Check if we're in silence
+        if (volume < this.silenceThreshold / 100) {
+          if (silenceStart === null) {
+            silenceStart = currentTime;
+          } else {
+            const silenceDuration = currentTime - silenceStart;
+
+            // If silence is long enough, skip it
+            if (silenceDuration >= this.minSilenceDuration && this.skipSilence) {
+              // Skip to current time plus minimum silence duration
+              const skipTo = currentTime + this.minSilenceDuration;
+
+              if (skipTo < this.duration) {
+                this.player.seekTo(skipTo, true);
+                this.silenceSegments.push({
+                  start: silenceStart,
+                  end: skipTo
+                });
+              }
+              silenceStart = null;
             }
           }
+        } else {
+          silenceStart = null;
         }
-      }, 100);
-    }
+      }
+    }, 100); // Check every 100ms
   }
+}
 
-  private isWithinExistingSilenceSegment(time: number): boolean {
-    return this.silenceSegments.some(segment =>
-      time >= segment.start && time <= segment.end
-    );
-  }
+
+
+private async seekToKeyframe(targetTime: number): Promise<number> {
+  // Get video duration to validate target time
+  const duration = this.player.getDuration();
+
+  // Ensure target time is within valid range
+  const validTargetTime = Math.min(Math.max(0, targetTime), duration);
+
+  // Seek to the target time
+  this.player.seekTo(validTargetTime, true);
+
+  // Wait for seek to complete and return actual time
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const actualTime = this.player.getCurrentTime();
+      resolve(actualTime);
+    }, 50); // Small delay to allow seek to complete
+  });
+}
+private isWithinExistingSilenceSegment(time: number): boolean {
+  const bufferTime = 0.1; // 100ms buffer to prevent rapid seeking
+  return this.silenceSegments.some(segment =>
+    time >= (segment.start - bufferTime) && time <= (segment.end + bufferTime)
+  );
+}
 
   private pauseAnalysis() {
     if (this.silenceCheckInterval) {
